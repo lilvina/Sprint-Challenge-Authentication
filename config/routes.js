@@ -1,7 +1,7 @@
 const axios = require('axios');
-const bcrypt = require('bcryptjs');
-const db = require('../database/dbConfig.js');
 const { authenticate } = require('../auth/authenticate');
+const db = require('../database/dbConfig.js');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET;
 
@@ -32,8 +32,8 @@ function login(req, res) {
         const token = generateToken(user)
 
         res.status(200).json({
-          message: `Welcome!`,
-          token
+          message: `Welcome ${user.username}!`,
+          token,
         })
       } else {
         res.status(401).json({ message: 'Invalid Credentials' })
@@ -58,13 +58,14 @@ function getJokes(req, res) {
     });
 }
 
-function generateToken(user) {
+function generateToken(user){
   const payload = {
     subject: user.id,
     username: user.username
-  }
+  };
   const options = {
     expiresIn: '1d'
-  }
+  };
+
   return jwt.sign(payload, secret, options)
 }

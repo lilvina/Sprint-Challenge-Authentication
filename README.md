@@ -33,6 +33,7 @@ Demonstrate your understanding of this week's concepts by answering the followin
 1. What does bcrypt do to help us store passwords in a secure manner.
 - We use bcrypt because it can hash a password, implements salting both manual and automatically and accumulate hashing round.
 1. What does bcrypt do to slow down attackers?
+- By accumulative hashing rounds. The attacker must have a hash, know the algorithm that is used and how many rounds were used to generate the hash in the first place.
 1. What are the three parts of the JSON Web Token?
 - header: contains the algorithm with the token type
 - payload: claims information or other data that is stored in the token, which is a user id
