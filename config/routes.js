@@ -1,9 +1,9 @@
 const axios = require('axios');
-const { authenticate } = require('../auth/authenticate');
+const { authenticate } = require('../auth/authenticate.js');
 const db = require('../database/dbConfig.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const secret = process.env.JWT_SECRET;
+const secret = process.env.JWT_SECRET || "keep it a secret";
 
 module.exports = server => {
   server.post('/api/register', register);
@@ -24,7 +24,7 @@ function register(req, res) {
 
 function login(req, res) {
   // implement user login
-  const { username, password } = req.body
+  let { username, password } = req.body
   db('users')
     .where({ username })
     .first()
@@ -33,13 +33,13 @@ function login(req, res) {
         const token = generateToken(user)
 
         res.status(200).json({
-          message: `Welcome ${user.username}`,
+          message: `Welcome ${user.username}!`,
           token,
         })
       } else {
-        res.status(400).json({ message: 'Invalid credentials' })
+        res.status(401).json({ message: 'Invalid Credentials' })
       }
-    }).catch(err => res.status(500).json(err))
+    }).catch(err => {console.log(err); res.status(500).json(err)})
 }
 
 function getJokes(req, res) {
